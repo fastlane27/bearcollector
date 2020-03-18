@@ -1,10 +1,14 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import Bear
 
 class BearCreate(CreateView):
     model = Bear
     fields = '__all__'
+
+class BearUpdate(UpdateView):
+    model = Bear
+    fields = ['species', 'description']
 
 def home(request):
     return render(request, 'home.html')

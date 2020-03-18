@@ -12,6 +12,9 @@
         <p>Species: {{ bear.species }}</p>
         <p>Description: {{ bear.description }}</p>
       </div>
+      <div class="card-action">
+        <a href="{% url 'bears_update' bear.id %}">Edit</a>
+      </div>
     </div>
   </div>
 </div>
