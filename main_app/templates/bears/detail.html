@@ -11,6 +11,7 @@
         <span class="card-title">{{ bear.name }}</span>
         <p>Species: {{ bear.species }}</p>
         <p>Description: {{ bear.description }}</p>
+        <p>Age: {{ bear.age }}</p>
       </div>
       <div class="card-action">
         <a href="{% url 'bears_update' bear.id %}">Edit</a>
