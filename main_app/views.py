@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Bear
 from .forms import FeedingForm
@@ -32,3 +32,11 @@ def bears_detail(request, bear_id):
         'bear': bear,
         'feeding_form': feeding_form,
     })
+
+def add_feeding(request, bear_id):
+    form = FeedingForm(request.POST)
+    if form.is_valid():
+        new_feeding = form.save(commit=False)
+        new_feeding.bear_id = bear_id
+        new_feeding.save()
+    return redirect('bears_detail', bear_id=bear_id)

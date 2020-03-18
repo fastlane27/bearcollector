@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="col s6">
-    <form method="post">
+    <form action="{% url 'add_feeding' bear.id %}" method="post">
       {% csrf_token %}
       {{ feeding_form.as_p }}
       <input type="submit" class="btn light-blue darken-1" value="Add Feeding">
@@ -49,6 +49,9 @@
     setDefaultDate: true,
     autoClose: true
   });
+
+  const selectEl = document.getElementById('id_meal');
+  M.FormSelect.init(selectEl);
 </script>
 
 {% endblock %}
