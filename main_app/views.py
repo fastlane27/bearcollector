@@ -8,7 +8,7 @@ class BearCreate(CreateView):
 
 class BearUpdate(UpdateView):
     model = Bear
-    fields = ['species', 'description']
+    fields = ['species', 'description', 'age']
 
 class BearDelete(DeleteView):
     model = Bear
