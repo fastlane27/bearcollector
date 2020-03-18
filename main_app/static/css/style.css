@@ -20,3 +20,12 @@ footer.page-footer {
   padding: 10px 0;
   text-align: right;
 }
+
+.card .card-title {
+  font-weight: bold;
+  color: #0277bd;
+}
+
+.card .card-content p {
+  color: #424242;
+}
