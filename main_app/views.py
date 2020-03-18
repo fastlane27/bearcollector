@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Bear
 
 class BearCreate(CreateView):
@@ -9,6 +9,10 @@ class BearCreate(CreateView):
 class BearUpdate(UpdateView):
     model = Bear
     fields = ['species', 'description']
+
+class BearDelete(DeleteView):
+    model = Bear
+    success_url = '/bears/'
 
 def home(request):
     return render(request, 'home.html')
