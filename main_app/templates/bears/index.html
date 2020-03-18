@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="center grey-text text-darken-2">Bears List</h1>
+{% for bear in bears %}
+  <a href="">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ bear.name }}</span>
+        <p>Species: {{ bear.species }}</p>
+        <p>Description: {{ bear.description }}</p>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}
