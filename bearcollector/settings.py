@@ -121,5 +121,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Login and logout redirects
-LOGIN_REDIRECT_URL = '/bears_index/'
+LOGIN_REDIRECT_URL = '/bears/'
 LOGOUT_REDIRECT_URL = '/'
