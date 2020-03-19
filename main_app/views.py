@@ -10,6 +10,9 @@ from django.views.generic import ListView, DetailView
 from .models import Bear, Toy, Photo
 from .forms import FeedingForm
 
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'bearcollector'
+
 class BearCreate(LoginRequiredMixin, CreateView):
     model = Bear
     fields = ['name', 'species', 'description', 'age']
@@ -74,6 +77,21 @@ def add_feeding(request, bear_id):
 @login_required
 def delete_feeding(request, bear_id, feeding_id):
     Bear.objects.get(id=bear_id).feeding_set.get(id=feeding_id).delete()
+    return redirect('bears_detail', bear_id=bear_id)
+
+@login_required
+def add_photo(request, bear_id):
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            photo = Photo(url=url, bear_id=bear_id)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
     return redirect('bears_detail', bear_id=bear_id)
 
 @login_required

@@ -18,6 +18,17 @@
         <a href="{% url 'bears_delete' bear.id %}" class="light-blue-text text-darken-2">Delete</a>
       </div>
     </div>
+    {% for photo in bear.photo_set.all %}
+      <img class="responsive-img card-panel" src="{{photo.url}}">
+    {% empty %}
+      <div class="card-panel grey-text text-darken-2 center-align">No Photos Uploaded</div>
+    {% endfor %}
+    <form action="{% url 'add_photo' bear.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
+      {% csrf_token %}
+      <input type="file" name="photo-file">
+      <br><br>
+      <input type="submit" class="btn light-blue darken-1" value="Upload Photo">
+    </form>
   </div>
   <div class="col s6">
     <form action="{% url 'add_feeding' bear.id %}" method="post">
