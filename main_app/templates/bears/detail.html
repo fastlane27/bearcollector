@@ -27,9 +27,9 @@
     </form>
     <br>
     {% if bear.fed_for_today %}
-      <div class="card-panel teal-text center-align">{{bear.name}} has been fed all meals for today</div>
+      <div class="card-panel light-blue-text text-darken-2 center-align">{{bear.name}} has been fed all meals for today</div>
     {% else %}
-      <div class="card-panel red-text center-align">{{bear.name}} might be hungry</div>
+      <div class="card-panel red-text text-darken-1 center-align">{{bear.name}} might be hungry</div>
     {% endif %}
     <table class="striped">
       <thead>
@@ -44,6 +44,53 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3 class="grey-text text-darken-2">{{ bear.name }}'s Toys</h3>
+    {% if bear.toys.count %}
+      {% for toy in bear.toys.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_toy' bear.id toy.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn red darken-2">Remove</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Toys :(</h5>
+    {% endif %}
+  </div>
+  <div class="col s6">
+    <h3 class="grey-text text-darken-2">Available Toys</h3>
+    {% if toys.count %}
+      {% for toy in toys.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_toy' bear.id toy.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5 class="grey-text text-darken-2">{{bear.name}} already has all toys available</h5>
+    {% endif %}
   </div>
 </div>
 

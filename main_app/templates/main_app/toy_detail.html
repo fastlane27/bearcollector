@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="center grey-text text-darken-2">Toy Details</h1>
+
+<div class="row">
+  <div class="col s6 col-offset-3">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ toy.name }}</span>
+        <p><b>Color:</b> {{ toy.color }}</p>
+      </div>
+      <div class="card-action">
+        <a href="" class="light-blue-text text-darken-2">Edit</a>
+        <a href="" class="light-blue-text text-darken-2">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Bear
+from django.views.generic import ListView, DetailView
+from .models import Bear, Toy
 from .forms import FeedingForm
 
 class BearCreate(CreateView):
     model = Bear
-    fields = '__all__'
+    fields = ['name', 'species', 'description', 'age']
 
 class BearUpdate(UpdateView):
     model = Bear
@@ -27,10 +28,12 @@ def bears_index(request):
 
 def bears_detail(request, bear_id):
     bear = Bear.objects.get(id=bear_id)
+    toys_bear_doesnt_have = Toy.objects.exclude(id__in=bear.toys.all().values_list('id'))
     feeding_form = FeedingForm()
     return render(request, 'bears/detail.html', {
         'bear': bear,
         'feeding_form': feeding_form,
+        'toys': toys_bear_doesnt_have
     })
 
 def add_feeding(request, bear_id):
@@ -40,3 +43,21 @@ def add_feeding(request, bear_id):
         new_feeding.bear_id = bear_id
         new_feeding.save()
     return redirect('bears_detail', bear_id=bear_id)
+
+def assoc_toy(request, bear_id, toy_id):
+    Bear.objects.get(id=bear_id).toys.add(toy_id)
+    return redirect('bears_detail', bear_id=bear_id)
+
+def unassoc_toy(request, bear_id, toy_id):
+    Bear.objects.get(id=bear_id).toys.remove(toy_id)
+    return redirect('bears_detail', bear_id=bear_id)
+
+class ToyList(ListView):
+    model = Toy
+
+class ToyDetail(DetailView):
+    model = Toy
+
+class ToyCreate(CreateView):
+    model = Toy
+    fields = '__all__'
