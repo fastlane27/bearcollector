@@ -29,3 +29,12 @@ footer.page-footer {
 .card .card-content p {
   color: #424242;
 }
+
+.feed-delete {
+  font-weight: bold;
+  visibility: hidden;
+}
+
+.feed-row:hover .feed-delete {
+  visibility: visible;
+}

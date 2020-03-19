@@ -37,9 +37,15 @@
       </thead>
       <tbody>
         {% for feeding in bear.feeding_set.all %}
-          <tr>
+          <tr class="feed-row">
             <td>{{feeding.date}}</td>
             <td>{{feeding.get_meal_display}}</td>
+            <td>
+              <form action="{% url 'delete_feeding' bear.id feeding.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn red darken-2 feed-delete" value="X">
+              </form>
+            </td>
           </tr>
         {% endfor %}
       </tbody>

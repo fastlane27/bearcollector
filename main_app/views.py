@@ -44,6 +44,10 @@ def add_feeding(request, bear_id):
         new_feeding.save()
     return redirect('bears_detail', bear_id=bear_id)
 
+def delete_feeding(request, bear_id, feeding_id):
+    Bear.objects.get(id=bear_id).feeding_set.get(id=feeding_id).delete()
+    return redirect('bears_detail', bear_id=bear_id)
+
 def assoc_toy(request, bear_id, toy_id):
     Bear.objects.get(id=bear_id).toys.add(toy_id)
     return redirect('bears_detail', bear_id=bear_id)
