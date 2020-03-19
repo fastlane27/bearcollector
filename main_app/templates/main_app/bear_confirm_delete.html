@@ -9,7 +9,7 @@
 <form action="" method="POST">
   {% csrf_token %}
   <input type="submit" value="Confirm" class="btn red darken-2">
-  <a href="{% url 'bears_detail' bear.id %}" class="btn light-blue darken-1">Cancel</a>
+  <a href="{% url 'bears_detail' bear.id %}" class="btn light-blue darken-2">Cancel</a>
 </form>
 
 {% endblock %}
