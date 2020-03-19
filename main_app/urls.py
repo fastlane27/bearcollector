@@ -12,6 +12,7 @@ urlpatterns = [
     path('bears/<int:pk>/delete/', views.BearDelete.as_view(), name='bears_delete'),
     path('bears/<int:bear_id>/add_feeding/', views.add_feeding, name='add_feeding'),
     path('bears/<int:bear_id>/feedings/<int:feeding_id>/', views.delete_feeding, name='delete_feeding'),
+    path('bears/<int:bear_id>/add_photo/', views.add_photo, name='add_photo'),
     path('bears/<int:bear_id>/assoc_toy/<int:toy_id>/', views.assoc_toy, name='assoc_toy'),
     path('bears/<int:bear_id>/unassoc_toy/<int:toy_id>/', views.unassoc_toy, name='unassoc_toy'),
     path('toys/', views.ToyList.as_view(), name='toys_index'),

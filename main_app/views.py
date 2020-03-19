@@ -1,12 +1,16 @@
+import uuid
+import boto3
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Bear, Toy
+from .models import Bear, Toy, Photo
 from .forms import FeedingForm
 
-class BearCreate(CreateView):
+class BearCreate(LoginRequiredMixin, CreateView):
     model = Bear
     fields = ['name', 'species', 'description', 'age']
 
@@ -14,11 +18,11 @@ class BearCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class BearUpdate(UpdateView):
+class BearUpdate(LoginRequiredMixin, UpdateView):
     model = Bear
     fields = ['species', 'description', 'age']
 
-class BearDelete(DeleteView):
+class BearDelete(LoginRequiredMixin, DeleteView):
     model = Bear
     success_url = '/bears/'
 
@@ -42,10 +46,12 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+@login_required
 def bears_index(request):
-    bears = Bear.objects.all()
+    bears = Bear.objects.filter(user=request.user)
     return render(request, 'bears/index.html', {'bears': bears})
 
+@login_required
 def bears_detail(request, bear_id):
     bear = Bear.objects.get(id=bear_id)
     toys_bear_doesnt_have = Toy.objects.exclude(id__in=bear.toys.all().values_list('id'))
@@ -56,6 +62,7 @@ def bears_detail(request, bear_id):
         'toys': toys_bear_doesnt_have
     })
 
+@login_required
 def add_feeding(request, bear_id):
     form = FeedingForm(request.POST)
     if form.is_valid():
@@ -64,32 +71,35 @@ def add_feeding(request, bear_id):
         new_feeding.save()
     return redirect('bears_detail', bear_id=bear_id)
 
+@login_required
 def delete_feeding(request, bear_id, feeding_id):
     Bear.objects.get(id=bear_id).feeding_set.get(id=feeding_id).delete()
     return redirect('bears_detail', bear_id=bear_id)
 
+@login_required
 def assoc_toy(request, bear_id, toy_id):
     Bear.objects.get(id=bear_id).toys.add(toy_id)
     return redirect('bears_detail', bear_id=bear_id)
 
+@login_required
 def unassoc_toy(request, bear_id, toy_id):
     Bear.objects.get(id=bear_id).toys.remove(toy_id)
     return redirect('bears_detail', bear_id=bear_id)
 
-class ToyList(ListView):
+class ToyList(LoginRequiredMixin, ListView):
     model = Toy
 
-class ToyDetail(DetailView):
+class ToyDetail(LoginRequiredMixin, DetailView):
     model = Toy
 
-class ToyCreate(CreateView):
+class ToyCreate(LoginRequiredMixin, CreateView):
     model = Toy
     fields = '__all__'
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin, UpdateView):
     model = Toy
     fields = ['name', 'color']
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin, DeleteView):
     model = Toy
     success_url = '/toys/'
