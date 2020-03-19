@@ -95,6 +95,11 @@ def add_photo(request, bear_id):
     return redirect('bears_detail', bear_id=bear_id)
 
 @login_required
+def delete_photo(request, bear_id, photo_id):
+    Bear.objects.get(id=bear_id).photo_set.get(id=photo_id).delete()
+    return redirect('bears_detail', bear_id=bear_id)
+
+@login_required
 def assoc_toy(request, bear_id, toy_id):
     Bear.objects.get(id=bear_id).toys.add(toy_id)
     return redirect('bears_detail', bear_id=bear_id)

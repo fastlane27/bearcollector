@@ -19,7 +19,15 @@
       </div>
     </div>
     {% for photo in bear.photo_set.all %}
-      <img class="responsive-img card-panel" src="{{photo.url}}">
+      <div class="card-panel photo-div">
+        <div class="photo-div-inner">
+          <img class="responsive-img" src="{{photo.url}}">
+          <form action="{% url 'delete_photo' bear.id photo.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="photo-delete" value="X">
+          </form>
+        </div>
+      </div>
     {% empty %}
       <div class="card-panel grey-text text-darken-2 center-align">No Photos Uploaded</div>
     {% endfor %}
