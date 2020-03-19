@@ -30,11 +30,17 @@ footer.page-footer {
   color: #424242;
 }
 
+.feed-delete-col {
+  text-align: right;
+}
+
 .feed-delete {
+  margin-right: 10px;
   font-weight: bold;
-  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
 }
 
 .feed-row:hover .feed-delete {
-  visibility: visible;
+  opacity: 1;
 }

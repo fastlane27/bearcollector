@@ -33,14 +33,16 @@
     {% endif %}
     <table class="striped">
       <thead>
-        <tr><th>Date</th><th>Meal</th></tr>
+        {% if bear.feeding_set.count > 0 %}
+          <tr class="grey-text text-darken-2"><th>Date</th><th>Meal</th></tr>
+        {% endif %}
       </thead>
       <tbody>
         {% for feeding in bear.feeding_set.all %}
           <tr class="feed-row">
             <td>{{feeding.date}}</td>
             <td>{{feeding.get_meal_display}}</td>
-            <td>
+            <td class="feed-delete-col">
               <form action="{% url 'delete_feeding' bear.id feeding.id %}" method="post">
                 {% csrf_token %}
                 <input type="submit" class="btn red darken-2 feed-delete" value="X">
@@ -52,7 +54,7 @@
     </table>
   </div>
 </div>
-<hr>
+<hr class="grey-text text-darken-2">
 <div class="row">
   <div class="col s6">
     <h3 class="grey-text text-darken-2">{{ bear.name }}'s Toys</h3>
@@ -73,7 +75,7 @@
         </div>
       {% endfor %}
     {% else %}
-      <h5>No Toys :(</h5>
+      <h5 class="grey-text text-darken-2">No Toys :(</h5>
     {% endif %}
   </div>
   <div class="col s6">
