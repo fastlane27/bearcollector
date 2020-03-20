@@ -96,7 +96,14 @@ def add_photo(request, bear_id):
 
 @login_required
 def delete_photo(request, bear_id, photo_id):
-    Bear.objects.get(id=bear_id).photo_set.get(id=photo_id).delete()
+    photo = Photo.objects.get(id=photo_id)
+    s3 = boto3.client('s3')
+    key = photo.url.rsplit('/', 1)[-1]
+    try:
+        s3.delete_object(Bucket=BUCKET, Key=key)
+        photo.delete()
+    except:
+        print('An error occurred deleting file from S3')
     return redirect('bears_detail', bear_id=bear_id)
 
 @login_required
